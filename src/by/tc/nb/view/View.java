@@ -2,6 +2,7 @@ package by.tc.nb.view;
 
 import by.tc.nb.bean.*;
 import by.tc.nb.controller.Controller;
+import by.tc.nb.dao.impl.pool.ConnectionPool;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,6 +27,7 @@ public class View {
                     + "e - for exit");
             String appCommand = scanner.nextLine();
             if (appCommand.equals("e")) {
+                ConnectionPool.getInstance().closePool();///CHECK IT!!!!!!!!!
                 System.out.println("Program finished!");
                 break;
             }
@@ -53,6 +55,7 @@ public class View {
                         String Command = scanner.nextLine();
 
                         if (Command.equals("logout")) {
+                            ConnectionPool.getInstance().closePool();///CHECK IT!!!!!!!!!
                             System.out.println("System is logout!");
                             break;
                         }
