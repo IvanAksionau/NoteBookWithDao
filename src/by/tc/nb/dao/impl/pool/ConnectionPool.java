@@ -9,7 +9,7 @@ import java.util.concurrent.BlockingQueue;
 public class ConnectionPool {
 	private static final ConnectionPool instance = new ConnectionPool();
 
-	private BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(5); // количество всех соединений
+	private BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(10); // количество всех соединений
 
 	private ConnectionPool(){
 		try {
@@ -24,15 +24,16 @@ public class ConnectionPool {
 		String password = "root";
 
 
-		for(int i = 0; i< 5; i++){
-			try {
-				pool.add(DriverManager.getConnection(url, login, password));
-			} catch (SQLException e) {
-				e.printStackTrace();
+		try {
+			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+			for(int index = 0; index < pool.remainingCapacity(); index++) {
+				pool.add(DriverManager.getConnection(url,login,password));
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
-
+//pool.add(DriverManager.getConnection(url, login, password));
 	public Connection getConnection() throws InterruptedException{
 		return pool.take();
 	}

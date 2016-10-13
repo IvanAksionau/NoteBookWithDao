@@ -32,6 +32,7 @@ public class MySQLUserDAO implements UserDAO {
                 try {
                     statement.close();
                     ConnectionPool.getInstance().returnConnection(connection);
+                    connection.close();
                 } catch (InterruptedException | SQLException ex) {
                     throw new DAOException(ex.getMessage());
                 }
@@ -64,6 +65,7 @@ public class MySQLUserDAO implements UserDAO {
                 try {
                     statement.close();
                     ConnectionPool.getInstance().returnConnection(connection);
+                    connection.close();
                 } catch (InterruptedException | SQLException ex) {
                     throw new DAOException(ex.getMessage());
                 }
