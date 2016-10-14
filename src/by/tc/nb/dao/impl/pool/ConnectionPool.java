@@ -9,7 +9,7 @@ import java.util.concurrent.BlockingQueue;
 public class ConnectionPool {
 	private static final ConnectionPool instance = new ConnectionPool();
 
-	private BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(10); // количество всех соединений
+	private BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(3); // количество всех соединений
 
 	private ConnectionPool(){
 		try {
@@ -43,7 +43,6 @@ public class ConnectionPool {
 			return;
 		}
 		connection.setAutoCommit(true);
-		connection.setReadOnly(true);
 		pool.put(connection);
 	}
 
