@@ -9,13 +9,13 @@ import java.util.concurrent.BlockingQueue;
 public class ConnectionPool {
 	private static final ConnectionPool instance = new ConnectionPool();
 
-	private BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(3); // количество всех соединений
+	private BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(3); // по идее хваило бы и одного
 
 	private ConnectionPool(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			System.out.println("Where is your MySQL JDBC Driver?");
+			System.out.println("Driver was not registered !");
 			e.printStackTrace();
 			return;
 		}
@@ -33,7 +33,7 @@ public class ConnectionPool {
 			e.printStackTrace();
 		}
 	}
-//pool.add(DriverManager.getConnection(url, login, password));
+
 	public Connection getConnection() throws InterruptedException{
 		return pool.take();
 	}

@@ -73,7 +73,7 @@ public class MySQLNoteBookDAO implements NoteBookDAO {
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
             resultSet = statement.executeQuery("select * from notes where users_id="
-                    + userID + " AND note LIKE '%" + content + "%';");
+                    + userID + " AND note LIKE '%" + content.trim() + "%';");////if trim needed??
             if (!resultSet.next()) {
                 System.out.println("Notes were not founded !");
             } else while (resultSet.next()) {
