@@ -55,7 +55,6 @@ public class View {
                         String Command = scanner.nextLine();
 
                         if (Command.equals("logout")) {
-                            ConnectionPool.getInstance().closePool();///CHECK IT!!!!!!!!!
                             System.out.println("System is logout!");
                             break;
                         }
