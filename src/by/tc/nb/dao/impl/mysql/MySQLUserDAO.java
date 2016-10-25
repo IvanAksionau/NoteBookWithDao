@@ -54,7 +54,6 @@ public class MySQLUserDAO implements UserDAO {
                 statement.executeUpdate(registrationQuery);
                 return true;
             } else {
-                System.out.println("login already exist!");
                 return false;
             }
         } catch (InterruptedException | SQLException ex) {

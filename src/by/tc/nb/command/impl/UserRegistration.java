@@ -1,6 +1,9 @@
 package by.tc.nb.command.impl;
 
-import by.tc.nb.bean.*;
+import by.tc.nb.bean.Request;
+import by.tc.nb.bean.Response;
+import by.tc.nb.bean.UserRegistrationRequest;
+import by.tc.nb.bean.UserRegistrationResponse;
 import by.tc.nb.command.Command;
 import by.tc.nb.command.exception.CommandException;
 import by.tc.nb.service.NoteBookService;
@@ -35,7 +38,10 @@ public class UserRegistration implements Command {
         UserRegistrationResponse response = new UserRegistrationResponse();
         response.setRegistrationStatus(resultId);
         response.setErrorStatus(false);
-        response.setResultMessage("Hello " + login + " !" + "You was registered !");
+        if (resultId == true) {
+            response.setResultMessage("Hello " + login + " !" + "You was registered !");
+        }
+        else response.setResultMessage("login \"" + login + "\" already exist!");
         return response;
     }
 }
