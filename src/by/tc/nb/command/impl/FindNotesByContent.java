@@ -4,7 +4,6 @@ import by.tc.nb.bean.FindNotesByContentRequest;
 import by.tc.nb.bean.FindNotesByContentResponse;
 import by.tc.nb.bean.Request;
 import by.tc.nb.bean.Response;
-import by.tc.nb.bean.entity.Note;
 import by.tc.nb.command.Command;
 import by.tc.nb.command.exception.CommandException;
 import by.tc.nb.service.NoteBookService;
