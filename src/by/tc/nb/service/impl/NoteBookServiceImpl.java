@@ -19,7 +19,7 @@ public class NoteBookServiceImpl implements NoteBookService {
         try {
             NoteBookDAOFactory.getInstance().getNoteBookDAO().addNote(note, userID);
         } catch (DAOException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(e);
         }
 
     }
