@@ -32,7 +32,7 @@ public class UserLogging implements Command {
         try {
             resultId = nbService.logging(login, req.getPassword());
         } catch (ServiceException e) {
-            throw new CommandException(e.getMessage());
+            throw new CommandException(e);
         }
 
         UserLoggingResponse response = new UserLoggingResponse();
