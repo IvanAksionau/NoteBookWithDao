@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class View {
     private static final Controller controller = new Controller();
     private static final Scanner scanner = new Scanner(System.in);
-    private static String help = "Enter : " + "\r\n"
+    private static final String help = "Enter : " + "\r\n"
             + "1 - Add new note into notebook" + "\r\n"
             + "2 - Clear the notebook" + "\r\n"
             + "3 - Find notes by content" + "\r\n"
