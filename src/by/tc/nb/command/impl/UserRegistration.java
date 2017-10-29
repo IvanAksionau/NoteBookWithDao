@@ -16,7 +16,7 @@ import by.tc.nb.service.exception.ServiceException;
 public class UserRegistration implements Command {
     @Override
     public Response execute(Request request) throws CommandException {
-        UserRegistrationRequest req = null;
+        UserRegistrationRequest req;
         if (request instanceof UserRegistrationRequest) {
             req = (UserRegistrationRequest) request;
         } else {
@@ -24,15 +24,14 @@ public class UserRegistration implements Command {
         }
 
         String login = req.getLogin();
-        String password = req.getPassword();
         boolean resultId;
         ServiceFactory service = ServiceFactory.getInstance();
         NoteBookService nbService = service.getNoteBookService();
 
         try {
-            resultId = nbService.registration(login,password);
+            resultId = nbService.registration(login, req.getPassword());
         } catch (ServiceException e) {
-            throw new CommandException(e.getMessage());
+            throw new CommandException(e);
         }
 
         UserRegistrationResponse response = new UserRegistrationResponse();
@@ -40,8 +39,7 @@ public class UserRegistration implements Command {
         response.setErrorStatus(false);
         if (resultId == true) {
             response.setResultMessage("Hello " + login + " !" + "You was registered !");
-        }
-        else response.setResultMessage("login \"" + login + "\" already exist!");
+        } else response.setResultMessage("login \"" + login + "\" already exist!");
         return response;
     }
 }

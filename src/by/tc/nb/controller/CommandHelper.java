@@ -25,5 +25,4 @@ public class CommandHelper {
 		command = commands.get(commandName);
 		return command;
 	}
-
 }

@@ -16,23 +16,20 @@ public class FindNotesByContent implements Command {
 
     @Override
     public Response execute(Request request) throws CommandException {
-        FindNotesByContentRequest req = null;
+        FindNotesByContentRequest req;
         if (request instanceof FindNotesByContentRequest) {
             req = (FindNotesByContentRequest) request;
         } else {
             throw new CommandException("Wrong request");
         }
 
-        String content = req.getContent();
-        int userID = req.getUserID();
         ServiceFactory service = ServiceFactory.getInstance();
         NoteBookService nbService = service.getNoteBookService();
-
-        List<String> result = null;
+        List<String> result;
         try {
-            result = nbService.findNotesByContent(content, userID);
+            result = nbService.findNotesByContent(req.getContent(), req.getUserID());
         } catch (ServiceException e) {
-            throw new CommandException(e.getMessage());
+            throw new CommandException(e);
         }
 
         FindNotesByContentResponse response = new FindNotesByContentResponse();
@@ -41,5 +38,4 @@ public class FindNotesByContent implements Command {
         response.setResultMessage("Count of founded notes is " + result.size());
         return response;
     }
-
 }

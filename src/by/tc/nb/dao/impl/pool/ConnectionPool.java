@@ -7,58 +7,58 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 public class ConnectionPool {
-	private static final ConnectionPool instance = new ConnectionPool();
+    private static final ConnectionPool instance = new ConnectionPool();
 
-	private BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(3); // по идее хваило бы и одного
+    private BlockingQueue<Connection> pool = new ArrayBlockingQueue<>(3); // по идее хваило бы и одного
 
-	private ConnectionPool(){
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			System.out.println("Driver was not registered !");
-			e.printStackTrace();
-			return;
-		}
-		String url = "jdbc:mysql://localhost:3306/notebook_db?useSSL=false";
-		String login = "root";
-		String password = "root";
-
-
-		try {
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			for(int index = 0; index < pool.remainingCapacity(); index++) {
-				pool.add(DriverManager.getConnection(url,login,password));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public Connection getConnection() throws InterruptedException{
-		return pool.take();
-	}
-
-	public void returnConnection(Connection connection) throws SQLException, InterruptedException{
-		if(connection == null){
-			return;
-		}
-		connection.setAutoCommit(true);
-		pool.put(connection);
-	}
+    private ConnectionPool() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Driver was not registered !");
+            e.printStackTrace();
+            return;
+        }
+        String url = "jdbc:mysql://localhost:3306/notebook_db?useSSL=false";
+        String login = "root";
+        String password = "root";
 
 
-	public void closePool(){ //завершения работы всего приложения
+        try {
+            //DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            for (int index = 0; index < pool.remainingCapacity(); index++) {
+                pool.add(DriverManager.getConnection(url, login, password));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-		for(Connection con : pool){
-			try {
-				con.close();
-			} catch (SQLException e) {
-			}
-		}
+    public Connection getConnection() throws InterruptedException {
+        return pool.take();
+    }
 
-	}
+    public void returnConnection(Connection connection) throws SQLException, InterruptedException {
+        if (connection == null) {
+            return;
+        }
+        connection.setAutoCommit(true);
+        pool.put(connection);
+    }
 
-	public static ConnectionPool getInstance(){
-		return instance;
-	}
+
+    public void closePool() { //завершения работы всего приложения
+
+        for (Connection con : pool) {
+            try {
+                con.close();
+            } catch (SQLException e) {
+            }
+        }
+
+    }
+
+    public static ConnectionPool getInstance() {
+        return instance;
+    }
 }
