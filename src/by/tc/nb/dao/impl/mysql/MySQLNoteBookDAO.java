@@ -13,10 +13,12 @@ import java.util.ArrayList;
 
 public class MySQLNoteBookDAO implements NoteBookDAO {
 
+    private static Connection connection;
+    private static Statement statement;
+    private static ResultSet resultSet;
+
     @Override
     public void addNote(String note, int userID) throws DAOException {
-        Connection connection = null;
-        Statement statement = null;
         String noteDate = LocalDate.now().toString();
         String addNoteQuery =
                 "insert into notes (users_id, note, date) values('" + userID + "', '" + note + "', '" + noteDate + "');";
@@ -37,17 +39,14 @@ public class MySQLNoteBookDAO implements NoteBookDAO {
                 }
             }
         }
-
     }
 
     @Override
     public void createNewNoteBook(int userID) throws DAOException {
-        Connection connection = null;
-        Statement statement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
-            statement.executeUpdate("delete from notes where users_id=" + userID + ";");
+            statement.executeUpdate("delete from notes where users_id =" + userID + ";");
             //statement.close(); обязательно ли это, если я закрываю в finally ?
         } catch (InterruptedException | SQLException ex) {
             throw new DAOException(ex.getMessage());
@@ -66,9 +65,6 @@ public class MySQLNoteBookDAO implements NoteBookDAO {
     @Override
     public ArrayList findNoteByContent(String content, int userID) throws DAOException {
         ArrayList<String> list = new ArrayList<>();
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
@@ -98,9 +94,6 @@ public class MySQLNoteBookDAO implements NoteBookDAO {
     @Override
     public ArrayList findNotesByDate(String date, int userID) throws DAOException {
         ArrayList<String> list = new ArrayList<>();
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
@@ -131,9 +124,6 @@ public class MySQLNoteBookDAO implements NoteBookDAO {
     @Override
     public ArrayList showAllNotes(int userID) throws DAOException {
         ArrayList<String> list = new ArrayList<>();
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();

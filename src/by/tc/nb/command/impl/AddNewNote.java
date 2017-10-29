@@ -13,22 +13,19 @@ public class AddNewNote implements Command {
 
     @Override
     public Response execute(Request request) throws CommandException {
-        AddNewNoteRequest req = null;
+        AddNewNoteRequest req;
         if (request instanceof AddNewNoteRequest) {
             req = (AddNewNoteRequest) request;
         } else {
             throw new CommandException("Wrong request");
         }
 
-        String note = req.getNote();
-        int userID = req.getUserID();
-        ServiceFactory service = ServiceFactory.getInstance();
-        NoteBookService nbService = service.getNoteBookService();
+        NoteBookService nbService = ServiceFactory.getInstance().getNoteBookService();
 
         try {
-            nbService.addNote(note,userID);
+            nbService.addNote(req.getNote(), req.getUserID());
         } catch (ServiceException e) {
-            throw new CommandException();
+            throw new CommandException(e);
         }
 
         Response response = new Response();

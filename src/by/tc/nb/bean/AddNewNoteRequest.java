@@ -19,5 +19,4 @@ public class AddNewNoteRequest extends Request {
     public void setNote(String note) {
         this.note = note;
     }
-
 }

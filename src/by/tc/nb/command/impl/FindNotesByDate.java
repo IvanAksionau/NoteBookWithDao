@@ -16,24 +16,23 @@ import java.util.List;
  * Created by Ivan on 29.09.2016.
  */
 public class FindNotesByDate implements Command {
+
     @Override
     public Response execute(Request request) throws CommandException {
-        FindNotesByDateRequest req = null;
+        FindNotesByDateRequest req;
         if (request instanceof FindNotesByDateRequest) {
             req = (FindNotesByDateRequest) request;
         } else {
             throw new CommandException("Wrong request");
         }
 
-        String date = req.getDate();
-        int userID = req.getUserID();
-        List<String> result = null;
+        List<String> result;
         ServiceFactory service = ServiceFactory.getInstance();
         NoteBookService nbService = service.getNoteBookService();
         try {
-            result = nbService.findNotesByDate(date, userID);
+            result = nbService.findNotesByDate(req.getDate(), req.getUserID());
         } catch (ServiceException e) {
-            throw new CommandException(e.getMessage());
+            throw new CommandException(e);
         }
 
         FindNotesByDateResponse response = new FindNotesByDateResponse();

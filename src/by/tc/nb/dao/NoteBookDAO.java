@@ -15,5 +15,4 @@ public interface NoteBookDAO {
 	ArrayList findNotesByDate(String date, int userID) throws DAOException;
 
 	ArrayList showAllNotes(int userID) throws DAOException;
-
 }

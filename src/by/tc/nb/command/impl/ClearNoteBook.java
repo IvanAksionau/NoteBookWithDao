@@ -14,21 +14,20 @@ public class ClearNoteBook implements Command {
 
     @Override
     public Response execute(Request request) throws CommandException {
-        ClearNoteBookRequest req = null;
+        ClearNoteBookRequest req;
         if (request instanceof ClearNoteBookRequest) {
             req = (ClearNoteBookRequest) request;
         } else {
             throw new CommandException("Wrong request");
         }
-        int userID = req.getUserID();
 
         ServiceFactory service = ServiceFactory.getInstance();
         NoteBookService nbService = service.getNoteBookService();
 
         try {
-            nbService.clearAllNotes(userID);
+            nbService.clearAllNotes(req.getUserID());
         } catch (ServiceException e) {
-            throw new CommandException(e.getMessage());
+            throw new CommandException(e);
         }
         Response response = new Response();
         response.setErrorStatus(false);

@@ -18,22 +18,21 @@ import java.util.List;
 public class ShowNotes implements Command {
     @Override
     public Response execute(Request request) throws CommandException {
-        ShowNotesRequest req = null;
+        ShowNotesRequest req;
         if (request instanceof ShowNotesRequest) {
             req = (ShowNotesRequest) request;
         } else {
             throw new CommandException("Wrong request");
         }
 
-        int userID = req.getUserID();
-        List<String> result = null;
+        List<String> result;
         ServiceFactory service = ServiceFactory.getInstance();
         NoteBookService nbService = service.getNoteBookService();
 
         try {
-            result = nbService.ShowNotes(userID);
+            result = nbService.ShowNotes(req.getUserID());
         } catch (ServiceException e) {
-            throw new CommandException(e.getMessage());
+            throw new CommandException(e);
         }
 
         ShowNotesResponse response = new ShowNotesResponse();

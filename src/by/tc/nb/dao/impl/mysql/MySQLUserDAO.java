@@ -10,15 +10,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class MySQLUserDAO implements UserDAO {
+
+    private static Connection connection;
+    private static Statement statement;
+    private static ResultSet result;
+    private static String checkLoginQuery;
+
     @Override
     public int logging(String login, String password) throws DAOException {
-        Connection connection = null;
-        Statement statement = null;
-        String checkLoginQuery = "select * from users where (login, pass)=('" + login + "', '" + password + "');";
+        checkLoginQuery = "select * from users where (login, pass)=('" + login + "', '" + password + "');";
         try {
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(checkLoginQuery);
+            result = statement.executeQuery(checkLoginQuery);
             if (result.next()) {
                 return result.getInt("users_id");
             } else {
@@ -33,23 +37,20 @@ public class MySQLUserDAO implements UserDAO {
                     statement.close();
                     ConnectionPool.getInstance().returnConnection(connection);
                 } catch (InterruptedException | SQLException ex) {
-                    throw new DAOException(ex.getMessage());
+                    throw new DAOException(ex);
                 }
             }
         }
-
     }
 
     @Override
     public boolean registration(String login, String password) throws DAOException {
-        Connection connection = null;
-        Statement statement = null;
-        String checkLoginQuery = "select * from users where login = '" + login + "';";
+        checkLoginQuery = "select * from users where login = '" + login + "';";
         String registrationQuery = "insert into users (login, pass) values ('" + login + "', '" + password + "');";
         try {
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(checkLoginQuery);
+            result = statement.executeQuery(checkLoginQuery);
             if (!result.next()) {
                 statement.executeUpdate(registrationQuery);
                 return true;
@@ -64,11 +65,9 @@ public class MySQLUserDAO implements UserDAO {
                     statement.close();
                     ConnectionPool.getInstance().returnConnection(connection);
                 } catch (InterruptedException | SQLException ex) {
-                    throw new DAOException(ex.getMessage());
+                    throw new DAOException(ex);
                 }
             }
         }
-
     }
-
 }
